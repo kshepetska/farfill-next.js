@@ -52,7 +52,7 @@ const Nav: React.FC = () => {
             <div className={`w-6 h-0.5 bg-white rounded-full transition-transform duration-300 ${isMenuOpen ? '-rotate-45 -translate-y-2' : ''}`}></div>
           </div>
         </button>
-        <nav className={`lg:flex w-full justify-end lg:space-x-4 ${isMenuOpen ? 'fixed top-20 left-0 right-0 bottom-0 bg-white z-50 flex flex-col justify-center items-center' : 'hidden'}`} style={{backgroundImage: `url(${Map.src})`, backgroundSize: 'cover', backgroundPosition: 'center'}}>
+        <nav className={`lg:flex w-full justify-end lg:space-x-4 ${isMenuOpen ? 'fixed top-20 left-0 right-0 bottom-0 bg-white z-50 flex flex-col justify-center items-center' : 'hidden'}`}>
           {navLinks.map((link, index) => (
             <a
               key={index}
