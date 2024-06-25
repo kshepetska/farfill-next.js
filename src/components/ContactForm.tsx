@@ -50,8 +50,8 @@ const ContactForm: React.FC = () => {
 
   const onSubmit: SubmitHandler<FormData> = () => {
     if (typeof window !== 'undefined') {
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({ event: 'formSubmission', formType: 'contactForm' });
+      (window as any).dataLayer = (window as any).dataLayer || [];
+      (window as any).dataLayer.push({ event: 'formSubmission', formType: 'contactForm' });
     }
     setIsModalOpen(true);
   };
