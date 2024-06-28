@@ -1,12 +1,12 @@
 import React from 'react';
-import Slider, { CustomArrowProps } from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 import Pippeta from '../images/brands/pippeta-black.png';
 import Millie from '../images/brands/millie-black.png';
 import Humantra from '../images/brands/humantra-black.png';
-
 import Image from 'next/image';
 
 const testimonials = [
@@ -33,9 +33,13 @@ const testimonials = [
   },
 ];
 
+interface CustomArrowProps {
+  onClick?: () => void;
+}
+
 const CustomNextArrow: React.FC<CustomArrowProps> = ({ onClick }) => (
   <button
-    className="absolute flex items-center justify-center right-0 -bottom-12 w-10 h-10 transform bg-transparent border border-white rounded-md p-2 shadow-lg z-10 hover:bg-white md:mr-[43%] lg:mr-[45%] md:max-w-600px:mr-0"
+    className="custom-next-button flex items-center justify-center -bottom-12 w-10 h-10 transform bg-transparent border border-white rounded-md shadow-lg z-10 hover:bg-white"
     onClick={onClick}
   >
     <span className="text-white text-lg transition-colors duration-300 hover:text-blue-800">{'>'}</span>
@@ -44,37 +48,14 @@ const CustomNextArrow: React.FC<CustomArrowProps> = ({ onClick }) => (
 
 const CustomPrevArrow: React.FC<CustomArrowProps> = ({ onClick }) => (
   <button
-    className="absolute flex items-center justify-center left-0 -bottom-12 w-10 h-10 transform bg-transparent border border-white rounded-lg p-2 shadow-lg z-10 hover:bg-white md:ml-[43%] lg:ml-[45%] md:max-w-600px:ml-0"
+    className="custom-prev-button flex items-center justify-center -bottom-12 w-10 h-10 transform bg-transparent border border-white rounded-lg shadow-lg z-10 hover:bg-white"
     onClick={onClick}
   >
     <span className="text-white text-lg transition-colors duration-300 hover:text-blue-800">{'<'}</span>
   </button>
 );
 
-
 const Testimonials: React.FC = () => {
-  const settings = {
-    dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 2,
-    slidesToScroll: 2,
-    nextArrow: <CustomNextArrow />,
-    prevArrow: <CustomPrevArrow />,
-    responsive: [
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-          nextArrow: <CustomNextArrow />,
-          prevArrow: <CustomPrevArrow />,
-          dots: false,
-          infinite: true,
-        },
-      },
-    ],
-  };
 
   return (
     <section className="bg-[#1D1D8F] py-20">
@@ -111,34 +92,54 @@ const Testimonials: React.FC = () => {
           </div>
         </div>
         <div className="wide:hidden relative">
-          <Slider {...settings}>
+          <Swiper
+            modules={[Navigation]}
+            loop={true}
+            navigation={{
+              nextEl: '.custom-next-button',
+              prevEl: '.custom-prev-button',
+            }}
+            pagination={{ clickable: true }}
+            slidesPerView={1}
+            breakpoints={{
+              768: {
+                slidesPerView: 2,
+              },
+            }}
+          >
             {testimonials.map((testimonial, index) => (
-              <div key={index} className="pb-5">
-                <div className="bg-white mt-2.5 shadow-lg rounded-lg text-left p-5 relative mx-2 hover:scale-[1.05] transition-transform duration-300 ease-in-out">
-                  <h4 className="mt-4 mb-2.5 md:mb-4 font-bold text-accent-color text-xl text-accent-color">{testimonial.name}</h4>
-                  <p className="text-text-color font-bold font-raleway text-left text-xs text-text-color md:text-sm mb-20 h-40 md:h-28 mb-4 md:mb-9">{testimonial.text}</p>
-                  <div className="flex items-center justify-between mb-6 md:mb-8">
-                    <a
-                      href={testimonial.link}
-                      className="text-blue-800 hover:underline"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {testimonial.linkText}
-                    </a>
-                    <Image
-                      src={testimonial.logo.src}
-                      alt={`${testimonial.name} logo`}
-                      className="h-8 w-auto"
-                      width={1000}
-                      height={ testimonial.logo.height}
-                    />
+              <SwiperSlide className='w-full' key={index}>
+                <div className="pb-5">
+                  <div className="bg-white mt-2.5 shadow-lg rounded-lg text-left p-5 relative mx-2 hover:scale-[1.05] transition-transform duration-300 ease-in-out">
+                    <h4 className="mt-4 mb-2.5 md:mb-4 font-bold text-accent-color text-xl text-accent-color">{testimonial.name}</h4>
+                    <p className="text-text-color font-bold font-raleway text-left text-xs text-text-color md:text-sm mb-20 md:h-28">{testimonial.text}</p>
+                    <div className="flex items-center justify-between mb-6 md:mb-8">
+                      <a
+                        href={testimonial.link}
+                        className="text-blue-800 hover:underline"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {testimonial.linkText}
+                      </a>
+                      <Image
+                        src={testimonial.logo.src}
+                        alt={`${testimonial.name} logo`}
+                        className="h-8 w-auto"
+                        width={1000}
+                        height={testimonial.logo.height}
+                      />
+                    </div>
+                    <span className="absolute left-0 bottom-0 bg-[#FECB04] h-3 w-full block rounded-b-lg"></span>
                   </div>
-                  <span className="absolute left-0 bottom-0 bg-[#FECB04] h-3 w-full block rounded-b-lg"></span>
                 </div>
-              </div>
+              </SwiperSlide>
             ))}
-          </Slider>
+          </Swiper>
+          <div className='flex justify-center items-center gap-4'>
+            <CustomPrevArrow />
+            <CustomNextArrow />
+          </div>
         </div>
       </div>
     </section>
